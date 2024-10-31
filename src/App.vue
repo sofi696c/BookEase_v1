@@ -35,20 +35,20 @@ const logout = async () => {
 <style >
 header {
   display: flex;
-  flex-direction: column; /* Arrangerer indholdet vertikalt */
-  justify-content: center; /* Centerer indholdet horisontalt */
-  align-items: center; /* Centerer alt indhold vertikalt */
-  position: fixed; /* Gør headeren fast */
-  top: 0; /* Sørger for at headeren altid er i toppen */
+  flex-direction: column; 
+  justify-content: center; 
+  align-items: center; 
+  position: fixed; 
+  top: 0; 
   left: 0;
-  width: 100%; /* Fylder hele bredden af skærmen */
-  background-color: #ccdabe; /* Baggrundsfarve */
+  width: 100%; 
+  background-color: #ccdabe; 
   height: 100px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Tilføjer en skygge under headeren */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
 }
 
 .logo {
-  font-size: 2rem; /* Gør logoet mere fremtrædende */
+  font-size: 2rem; 
   color: #a06666;
 }
 
@@ -67,11 +67,11 @@ nav a.router-link-exact-active:hover {
 
 nav a {
   display: inline-block;
-  padding: 0.5rem 1rem; /* Juster padding for bedre knapstørrelse */
+  padding: 0.5rem 1rem; 
   border-left: 1px solid var(--color-border);
-  color: #a06666; /* Gør teksten hvid */
-  background-color: #ccdabe; /* Sætter baggrundsfarve til knapperne */
-  transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+  color: #a06666; 
+  background-color: #ccdabe; 
+  transition: background-color 0.3s, transform 0.3s; 
 }
 
 nav a:first-of-type {
@@ -79,36 +79,36 @@ nav a:first-of-type {
 }
 
 nav a:hover {
-  background-color: #a8b49c; /* Mørkere grå ved hover */
-  transform: scale(1.05); /* Lille zoom-effekt ved hover */
+  background-color: #a8b49c; 
+  transform: scale(1.05); 
 }
 
 button {
-  margin-left: 1rem; /* Giver lidt afstand til knappen */
-  background-color: #ccdabe; /* Rød baggrundsfarve for log out knap */
-  color: #a06666; /* Hvid tekst */
-  border: none; /* Ingen kant */
-  padding: 0.5rem 1rem; /* Juster padding */
-  cursor: pointer; /* Pointer cursor ved hover */
-  transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+  margin-left: 1rem; 
+  background-color: #ccdabe; 
+  color: #a06666; 
+  border: none; 
+  padding: 0.5rem 1rem; 
+  cursor: pointer; 
+  transition: background-color 0.3s, transform 0.3s; 
 }
 
 button:hover {
-  background-color: #a8b49c; /* Mørkere rød ved hover */
-  transform: scale(1.05); /* Lille zoom-effekt ved hover */
+  background-color: #a8b49c; 
+  transform: scale(1.05); 
 }
 
 @media (min-width: 1024px) {
   header {
-    padding: 2rem; /* Tilføjer mere padding til større skærme */
+    padding: 2rem; 
   }
 
   .logo {
-    font-size: 3rem; /* Øger størrelsen på logoet for større skærme */
+    font-size: 3rem; 
   }
 
   nav {
-    font-size: 1rem; /* Justerer navigationens tekststørrelse */
+    font-size: 1rem; 
   }
 }
 

@@ -8,15 +8,15 @@
         class="search-input"
       />
       <div class="book-list">
-        <h4>Resultater:</h4>
+        <h4>Results:</h4>
         <div v-if="filteredBooks.length">
           <div v-for="book in filteredBooks" :key="book.id" class="book-item">
             <h5>{{ book.title }}</h5>
-            <p>Forfatter: {{ book.author }}</p>
+            <p>Author: {{ book.author }}</p>
           </div>
         </div>
         <div v-else>
-          <p>Ingen bøger fundet.</p>
+          <p>No books found.</p>
         </div>
       </div>
     </div>

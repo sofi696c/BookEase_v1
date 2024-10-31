@@ -2,8 +2,8 @@
 import { ref, watch, onMounted } from 'vue';
 import { useBooks } from '../modules/useBooks';
 import { useUser } from '../modules/useUser';
-import { db, auth } from '../modules/firebase'; // Importér din Firestore-database og auth
-import { collection, addDoc } from 'firebase/firestore'; // Importér nødvendige Firestore-funktioner
+import { db, auth } from '../modules/firebase'; 
+import { collection, addDoc } from 'firebase/firestore'; 
 import GenreFilter from '../components/GenreFilter.vue';
 
 const { books, addBook, deleteBook, newBookTitle, newBookAuthor, newBookISBN, newBookGenre, newBookReleaseYear, newBookCoverUrl } = useBooks();
@@ -25,8 +25,8 @@ const removeBook = (id) => {
 };
 
 const selectedGenres = ref([]); // For at holde styr på valgte genrer
-const filteredBooks = ref([]); // Hold de filtrerede bøger
-const searchTerm = ref(''); // Hold søgetermen
+const filteredBooks = ref([]); // For at holde styr på filtrerede bøger
+const searchTerm = ref(''); // For at holde styr på søgetermen
 
 const genres = ['Romance', 'Fantasy', 'Historical Fiction', 'Thriller', 'Science Fiction', 'Horror', 'LGBTQ+', 'Non-Fiction'];
 
@@ -54,17 +54,17 @@ const filterBooks = (newBooks) => {
 
 // Filter bøgerne, når der er valgt genrer
 watch(selectedGenres, () => {
-  filterBooks(books.value); // Opdater filteredBooks baseret på valgte genrer
+  filterBooks(books.value); // Opdater filteredBooks ud fra på valgte genrer
 });
 
 // Watch på searchTerm for at opdatere filteredBooks, når søgetermen ændres
 watch(searchTerm, () => {
-  filterBooks(books.value); // Opdater filteredBooks når søgeterm ændres
+  filterBooks(books.value); // Opdater filteredBooks når den ændres
 });
 
-// Initielt vis alle bøger
+// Viser alle bøger
 onMounted(() => {
-  filteredBooks.value = books.value; // Sørg for at vise alle bøger ved indlæsning
+  filteredBooks.value = books.value; // Sørger for at vise alle bøger ved indlæsning
 });
 
 // Funktion til at håndtere genre filtrering
@@ -72,7 +72,7 @@ const filterByGenre = (selected) => {
   selectedGenres.value = selected; // Opdater valgte genrer
 };
 
-// Almindelig bruger - tilføj bog til Read Books
+// Alm bruger - tilføj bog til Read Books
 const addBookToReadBooks = async (book) => {
   const user = auth.currentUser; // Få den nuværende bruger
   if (user) {
@@ -138,7 +138,7 @@ const addBookToWantToRead = async (book) => {
       </div>
 
       <h1>Explore books</h1>
-      <!-- GenreFilter komponenten tilføjet her -->
+      <!-- GenreFilter komponenten -->
       <GenreFilter :genres="genres" :onFilter="filterByGenre" />
 
       <!-- Søgefelt til søgning -->

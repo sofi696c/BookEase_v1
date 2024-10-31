@@ -8,7 +8,7 @@ import { doc, deleteDoc, updateDoc } from 'firebase/firestore';
 const auth = getAuth();
 const readBooks = ref([]);
 
-// Fetch read books from Firestore
+// Fetch read books fra Firestore
 const fetchReadBooks = async () => {
   const user = auth.currentUser;
   if (user) {
@@ -25,7 +25,7 @@ const fetchReadBooks = async () => {
   }
 };
 
-// Function to remove a book from Read Books list
+// Function til at remove a book fra Read Books list
 const removeFromReadBooks = async (bookId) => {
   const user = auth.currentUser;
   if (user) {
@@ -49,7 +49,7 @@ const handleRemoveBook = async (bookId) => {
   }
 };
 
-// Function to give a rating to a book
+// Function til at give en rating til book
 const giveRating = async (bookId, rating) => {
   const user = auth.currentUser; // Hent den nuværende bruger
   if (user) {
@@ -59,7 +59,7 @@ const giveRating = async (bookId, rating) => {
       await updateDoc(bookDocRef, { rating });
       console.log('Rating given to book:', bookId, 'Rating:', rating);
       
-      // Opdater lokal tilstand for at afspejle den nye rating
+      // Opdater den lokale værdi med rating
       const book = readBooks.value.find(b => b.id === bookId);
       if (book) {
         book.rating = rating; // Opdater den lokale værdi med rating
@@ -70,7 +70,7 @@ const giveRating = async (bookId, rating) => {
   }
 };
 
-// Function to handle rating selection
+// Function til at handle rating 
 const handleRatingChange = (bookId, rating) => {
   giveRating(bookId, rating);
 };
@@ -82,6 +82,7 @@ onMounted(fetchReadBooks);
   <main>
     <h1>Books you have read:</h1>
     <ul>
+      <!-- bøgerne der er læst som bliver vist -->
       <li v-for="book in readBooks" :key="book.id" class="book-item">
         <img :src="book.coverUrl" alt="Book Cover" class="book-cover" />
         <div class="book-details">
@@ -92,7 +93,7 @@ onMounted(fetchReadBooks);
           <p v-if="book.rating"><strong>Rating:</strong> {{ book.rating }}</p>
         </div>
         
-        <!-- New container for rating and remove button -->
+        <!-- ny container for rating og remove button -->
         <div class="action-container">
           <!-- Dropdown for rating -->
           <select @change="(e) => handleRatingChange(book.id, parseInt(e.target.value))" class="rating-dropdown">
@@ -121,30 +122,30 @@ main {
   width: 80vh;
   display: flex;
   justify-content: space-between;
-  align-items: center; /* Align items in the center vertically */
+  align-items: center; 
   margin-bottom: 20px;
 }
 
 .book-cover {
-  width: 100px; /* Adjust width for book cover */
+  width: 100px; 
   height: auto;
 }
 
 .book-details {
-  flex-grow: 1; /* Allow details to take remaining space */
-  margin-left: 20px; /* Space between cover and details */
+  flex-grow: 1; 
+  margin-left: 20px; 
 }
 
 .action-container {
   display: flex;
-  flex-direction: column; /* Stack dropdown and button vertically */
-  align-items: center; /* Align items to the center horizontally */
-  justify-content: center; /* Center items vertically */
-  margin-left: 20px; /* Add space to the left for better spacing */
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center; 
+  margin-left: 20px; 
 }
 
 .rating-dropdown {
-  margin-bottom: 10px; /* Space between dropdown and button */
+  margin-bottom: 10px; 
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -163,11 +164,11 @@ main {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  padding: 8px 12px; /* Mindre padding for mindre knapper */
+  padding: 8px 12px; 
   color: white;
   transition: background-color 0.3s;
-  font-size: 14px; /* Mindre fontstørrelse for ensartethed */
-  width: 95%; /* Ensartet bredde for begge knapper */
+  font-size: 14px; 
+  width: 95%; 
 }
 
 .discard-button:hover {
