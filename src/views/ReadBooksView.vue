@@ -54,7 +54,7 @@ onMounted(fetchReadBooks);
 
 <template>
   <div>
-    <h1>Læste bøger</h1>
+    <h1>Books you have read:</h1>
     <ul>
       <li v-for="book in readBooks" :key="book.id" class="book-item">
         <img :src="book.coverUrl" alt="Book Cover" class="book-cover" />
@@ -63,7 +63,7 @@ onMounted(fetchReadBooks);
           <p><strong>Forfatter:</strong> {{ book.author }}</p>
           <p><strong>Udgivelsesår:</strong> {{ book.releaseYear }}</p>
           <button class="discard-button" @click="handleRemoveBook(book.id)">
-            Fjern fra læste bøger
+            Remove from Read Books
           </button>
         </div>
       </li>

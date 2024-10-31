@@ -72,6 +72,6 @@ export function useBooks() {
         newBookISBN,
         newBookGenre,
         newBookReleaseYear,
-        newBookCoverUrl // Returner cover-URL
+        newBookCoverUrl 
     };
 }

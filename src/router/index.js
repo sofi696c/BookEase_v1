@@ -11,9 +11,10 @@ const routes = [
   },
   
   {
-    path: '/reading-goal',
-    name: 'ReadingGoal',
-    component: () => import('../views/ReadingGoalView.vue')
+    path: '/want-to-read',
+    name: 'WantToRead',
+    component: () => import('../views/WantToReadView.vue'),
+    meta: { requiresAuth: true } // Beskyttet rute
   },
   {
     path: '/tbr',

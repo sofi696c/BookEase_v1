@@ -2,7 +2,7 @@
   <header>
     <h1 class="logo">BookEase</h1>
       <nav>
-        <RouterLink to="/reading-goal">Reading goal</RouterLink>
+        <RouterLink to="/want-to-read">Want to read</RouterLink>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/tbr">TBR</RouterLink>
         <RouterLink to="/read-books">Read books</RouterLink>
@@ -33,7 +33,7 @@ const logout = async () => {
 
 </script>
 
-<style>
+<style >
 header {
   display: flex;
   flex-direction: column; /* Arrangerer indholdet vertikalt */

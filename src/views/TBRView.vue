@@ -2,21 +2,70 @@
 import { ref, onMounted } from 'vue';
 import { db } from '../modules/firebase'; 
 import { getDocs, collection } from 'firebase/firestore';
-import { getAuth } from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { doc, deleteDoc } from 'firebase/firestore'; 
+import { useRouter } from 'vue-router';
 
 const auth = getAuth();
 const tbrBooks = ref([]);
+const router = useRouter();
 
+// Fetch TBR books from Firestore
 const fetchTBRBooks = async () => {
   const user = auth.currentUser;
   if (user) {
     const tbrBooksCollectionRef = collection(db, 'users', user.uid, 'TBRBooks');
     const snapshot = await getDocs(tbrBooksCollectionRef);
-    tbrBooks.value = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    const uniqueBooks = new Map();
+
+    snapshot.docs.forEach(doc => {
+      const bookData = { id: doc.id, ...doc.data() };
+      uniqueBooks.set(doc.id, bookData);
+    });
+
+    tbrBooks.value = Array.from(uniqueBooks.values());
+    console.log('Books fetched:', tbrBooks.value); // Log fetched books
+  } else {
+    console.log('No user is currently signed in.');
   }
 };
 
-onMounted(fetchTBRBooks);
+// Function to remove a book from TBR Books list
+const removeFromTBRBooks = async (bookId) => {
+    const user = auth.currentUser;
+    if (user) {
+        const bookDocRef = doc(db, 'users', user.uid, 'TBRBooks', bookId); 
+        try {
+            await deleteDoc(bookDocRef);
+            console.log('Book removed from TBR Books:', bookId);
+        } catch (error) {
+            console.error("Error removing book from TBR Books:", error);
+        }
+    }
+};
+
+// Handle book removal
+const handleRemoveTBRBook = async (bookId) => {
+  try {
+    await removeFromTBRBooks(bookId);
+    tbrBooks.value = tbrBooks.value.filter(book => book.id !== bookId); // Remove book locally
+    console.log('Book removed locally:', bookId);
+  } catch (error) {
+    console.error("Failed to remove book:", error);
+  }
+};
+
+// Check authentication status on component mount
+onMounted(() => {
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      fetchTBRBooks();
+    } else {
+      console.log('User is not authenticated, redirecting to login page.');
+      router.push('/login'); // Redirect to login page if not authenticated
+    }
+  });
+});
 </script>
 
 <template>
@@ -29,6 +78,9 @@ onMounted(fetchTBRBooks);
           <h2>{{ book.title }}</h2>
           <p><strong>Forfatter:</strong> {{ book.author }}</p>
           <p><strong>Udgivelsesår:</strong> {{ book.releaseYear }}</p>
+          <button class="discard-button" @click="handleRemoveTBRBook(book.id)">
+            Fjern fra TBR-listen
+          </button>  
         </div>
       </li>
     </ul>
@@ -38,10 +90,21 @@ onMounted(fetchTBRBooks);
   </div>
 </template>
 
+<style scoped>
+.discard-button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  color: white;
+  background-color: red;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.discard-button:hover {
+  background-color: #c61a07;
+}
 
-
-
-<style>
+/* Brug de samme stilarter som i ReadBooks.vue */
 .main {
   display: flex;
   justify-content: center;
@@ -50,14 +113,12 @@ onMounted(fetchTBRBooks);
   margin-top: 10vh;
 }
 
-/* Bøger vises i en liste */
 ul {
   margin-top: 2rem;
   list-style-type: none;
   padding: 0;
 }
 
-/* Hver bog item */
 .book-item {
   display: flex;
   align-items: center;
@@ -68,31 +129,22 @@ ul {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Billedet af bogen */
 .book-cover {
-  width: 100px; /* Juster størrelsen på bogcoveret */
+  width: 100px;
   height: auto;
   margin-right: 20px;
 }
 
-/* Detaljer om bogen */
 .book-details {
-  flex: 1; /* Gør, at detaljer fylder det resterende rum */
+  flex: 1;
   text-align: left;
 }
 
-.book-meta {
-  text-align: left; /* Juster teksten til venstre */
-  margin-left: 20px;
-}
-
-/* Ingen bøger besked */
 .no-books {
   color: #999;
   font-size: 1.2em;
 }
 
-/* Hovedoverskrift */
 h1 {
   font-size: 1.5em;
   color: #333;

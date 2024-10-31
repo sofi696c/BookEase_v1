@@ -65,7 +65,7 @@ const addBookToTBR = async (book) => {
   const user = auth.currentUser; // Få den nuværende bruger
   if (user) {
     try {
-      const tbrCollectionRef = collection(db, 'users', user.uid, 'tbr'); // Reference til TBR-samlingen for den aktuelle bruger
+      const tbrCollectionRef = collection(db, 'users', user.uid, 'TBR'); // Reference til TBR-samlingen for den aktuelle bruger
       await addDoc(tbrCollectionRef, {
         title: book.title,
         author: book.author,
@@ -78,8 +78,11 @@ const addBookToTBR = async (book) => {
     } catch (error) {
       console.error("Error adding book to TBR:", error);
     }
+  } else {
+    console.error("No user is currently logged in.");
   }
 };
+
 
 // Almindelig bruger - tilføj bog til Read Books
 const addBookToReadBooks = async (book) => {
@@ -104,6 +107,30 @@ const addBookToReadBooks = async (book) => {
     console.error("No user is currently logged in.");
   }
 };
+
+const addBookToWantToRead = async (book) => {
+  const user = auth.currentUser; // Få den nuværende bruger
+  if (user) {
+    try {
+      const wantToReadCollectionRef = collection(db, 'users', user.uid, 'WantToRead'); // Reference til WantToRead-samlingen for den aktuelle bruger
+      await addDoc(wantToReadCollectionRef, {
+        title: book.title,
+        author: book.author,
+        isbn: book.isbn,
+        genre: book.genre,
+        releaseYear: book.releaseYear,
+        coverUrl: book.coverUrl,
+      });
+      console.log('Book added to Want to Read:', book);
+    } catch (error) {
+      console.error("Error adding book to Want to Read:", error);
+    }
+  } else {
+    console.error("No user is currently logged in.");
+  }
+};
+
+
 </script>
 
 
@@ -153,6 +180,7 @@ const addBookToReadBooks = async (book) => {
 
               <div v-if="role === 'user'" class="user-buttons">
                 <button @click="addBookToTBR(book)" class="tbr-button">Add to TBR</button>
+                <button @click="addBookToWantToRead(book)" class="want-to-read-button">Want to read</button>
                 <button @click="addBookToReadBooks(book)" class="read-books-button">Add to Read Books</button>
               </div>
 
@@ -262,5 +290,15 @@ ul {
 }
 .read-books-button:hover {
   background-color: #7b8274;
+}
+.want-to-read-button {
+  background-color: #f39c12;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.want-to-read-button:hover {
+  background-color: #e67e22;
 }
 </style>
