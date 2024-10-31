@@ -7,7 +7,7 @@ import { collection, addDoc } from 'firebase/firestore'; // Importér nødvendig
 import GenreFilter from '../components/GenreFilter.vue';
 
 const { books, addBook, deleteBook, newBookTitle, newBookAuthor, newBookISBN, newBookGenre, newBookReleaseYear, newBookCoverUrl } = useBooks();
-const { user, role, login, logout, email, password, error: errorMessage } = useUser();
+const { user, role, login, email, password, error: errorMessage } = useUser();
 
 const addNewBook = () => {
   addBook({
@@ -60,28 +60,6 @@ const filterByGenre = (selected) => {
   selectedGenres.value = selected; // Opdater valgte genrer
 };
 
-// Almindelig bruger - tilføj bog til TBR
-const addBookToTBR = async (book) => {
-  const user = auth.currentUser; // Få den nuværende bruger
-  if (user) {
-    try {
-      const tbrCollectionRef = collection(db, 'users', user.uid, 'TBR'); // Reference til TBR-samlingen for den aktuelle bruger
-      await addDoc(tbrCollectionRef, {
-        title: book.title,
-        author: book.author,
-        isbn: book.isbn,
-        genre: book.genre,
-        releaseYear: book.releaseYear,
-        coverUrl: book.coverUrl,
-      });
-      console.log('Book added to TBR:', book);
-    } catch (error) {
-      console.error("Error adding book to TBR:", error);
-    }
-  } else {
-    console.error("No user is currently logged in.");
-  }
-};
 
 
 // Almindelig bruger - tilføj bog til Read Books
@@ -146,20 +124,19 @@ const addBookToWantToRead = async (book) => {
 
     <div v-else>
       <p>Welcome, {{ user.email }}!</p>
-      <button @click="logout">Logout</button>
 
       <div v-if="role === 'admin'" class="add-book-section">
-        <h2>Tilføj ny bog</h2>
+        <h2>Add a new book here:</h2>
         <input v-model="newBookTitle" placeholder="Bog titel" />
         <input v-model="newBookAuthor" placeholder="Forfatter" />
         <input v-model="newBookISBN" placeholder="ISBN" />
         <input v-model="newBookGenre" placeholder="Genre (komma-separeret)" />
         <input v-model="newBookReleaseYear" placeholder="Udgivelsesår" />
         <input v-model="newBookCoverUrl" placeholder="Bogcover URL" />
-        <button @click="addNewBook">Tilføj Bog</button>
+        <button class="add-new-book" @click="addNewBook">Add Book</button>
       </div>
 
-      <h1>Gå på opdagelse blandt bøgerne</h1>
+      <h1>Explore books</h1>
       <!-- GenreFilter komponenten tilføjet her -->
       <GenreFilter :genres="genres" :onFilter="filterByGenre" />
 
@@ -170,26 +147,25 @@ const addBookToWantToRead = async (book) => {
               <img :src="book.coverUrl" alt="Book Cover" class="book-cover" />
               <div class="book-details">
                 <h2>{{ book.title }}</h2>
-                <p><strong>Forfatter:</strong> {{ book.author }}</p>
+                <p><strong>Author:</strong> {{ book.author }}</p>
                 <p><strong>Genre:</strong> {{ book.genre.join(', ') }}</p>
               </div>
               <div class="book-meta">
-                <p><strong>Udgivelsesår:</strong> {{ book.releaseYear }}</p>
+                <p><strong>Release year:</strong> {{ book.releaseYear }}</p>
                 <p><strong>ISBN:</strong> {{ book.isbn }}</p>
               </div>
 
               <div v-if="role === 'user'" class="user-buttons">
-                <button @click="addBookToTBR(book)" class="tbr-button">Add to TBR</button>
                 <button @click="addBookToWantToRead(book)" class="want-to-read-button">Want to read</button>
                 <button @click="addBookToReadBooks(book)" class="read-books-button">Add to Read Books</button>
               </div>
 
-              <button v-if="role === 'admin'" @click="removeBook(book.id)" class="remove-button">Slet</button>
+              <button v-if="role === 'admin'" @click="removeBook(book.id)" class="remove-button">Delete book</button>
             </li>
           </ul>
         </div>
         <div v-else>
-          <p>Ingen bøger fundet.</p>
+          <p>No books found.</p>
         </div>
       </div>
     </div>
@@ -222,6 +198,18 @@ main {
   padding: 10px;
   font-size: 1rem;
 }
+.add-new-book{
+  padding: 10px;
+  font-size: 1rem;
+  background-color: #a6b29b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.add-new-book:hover{
+  background-color: #7b8274;
+}
 
 ul {
   margin-top: 2rem;
@@ -230,6 +218,7 @@ ul {
 }
 
 .book-item {
+  width: 80vh;
   display: flex;
   align-items: center;
   margin-bottom: 1rem;
@@ -257,8 +246,8 @@ ul {
 
 .remove-button {
   margin: 0 7%; /* Skub slet-knappen helt til højre */
-  padding: 5px 10px;
-  background-color: #e74c3c;
+  padding: 2% 4%;
+  background-color: #ea7676;
   color: white;
   border: none;
   border-radius: 5px;
@@ -266,24 +255,25 @@ ul {
 }
 
 .remove-button:hover {
-  background-color: #c61a07;
+  background-color: #ca4949;
+}
+
+.user-buttons {
+  display: flex; /* Sørg for, at knapperne er i samme række */
+  flex-direction: column; /* Stak knapperne vertikalt */
+  gap: 15px; /* Mellemrum mellem knapperne */
+  align-items: center; /* Centrér knapperne horisontalt */
+  padding: 0 5%;
 }
 
 .user-buttons button {
-  margin-left: 7%;
-  padding: 5px 10px;
+  width: 100%; /* Gør knapperne lige brede og fylder hele rummet */
+  padding: 10px; /* Juster padding for bedre udseende */
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
-
-.tbr-button {
-  background-color: #a58282;
-}
-.tbr-button:hover {
-  background-color: #8a6969;
-} 
 
 .read-books-button {
   background-color: #a6b29b;
@@ -292,13 +282,9 @@ ul {
   background-color: #7b8274;
 }
 .want-to-read-button {
-  background-color: #f39c12;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  background-color: #a58282;
 }
 .want-to-read-button:hover {
-  background-color: #e67e22;
+  background-color: #8a6969;
 }
 </style>

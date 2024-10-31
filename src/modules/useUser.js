@@ -52,12 +52,7 @@ export function useUser() {
         console.error("Error logging in: ", error.value);
     };
 
-    const addToTBR = async (book) => {
-        if (user.value) {
-            const tbrCollectionRef = collection(db, 'users', user.value.uid, 'TBR');
-            await addDoc(tbrCollectionRef, book);
-        }
-    };
+
 
     const addToReadBooks = async (book) => {
         if (user.value) {
@@ -85,7 +80,6 @@ export function useUser() {
         error,
         login,
         logout,
-        addToTBR,
         addToReadBooks,
         removeFromReadBooks
     };

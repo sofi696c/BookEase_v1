@@ -16,12 +16,7 @@ const routes = [
     component: () => import('../views/WantToReadView.vue'),
     meta: { requiresAuth: true } // Beskyttet rute
   },
-  {
-    path: '/tbr',
-    name: 'TBR',
-    component: () => import('../views/TBRView.vue'),
-    meta: { requiresAuth: true } // Beskyttet rute
-  },
+
   {
     path: '/read-books',
     name: 'ReadBooks',

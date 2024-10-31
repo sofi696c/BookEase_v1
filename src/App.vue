@@ -4,7 +4,6 @@
       <nav>
         <RouterLink to="/want-to-read">Want to read</RouterLink>
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/tbr">TBR</RouterLink>
         <RouterLink to="/read-books">Read books</RouterLink>
         <button v-if="user" @click="logout">Log out</button>
       </nav>
