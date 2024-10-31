@@ -159,12 +159,15 @@ main {
 }
 
 .discard-button {
-  padding: 5px 10px;
-  color: white;
-  background-color: #ea7676;
+  background-color: #ec6060;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  padding: 8px 12px; /* Mindre padding for mindre knapper */
+  color: white;
+  transition: background-color 0.3s;
+  font-size: 14px; /* Mindre fontstørrelse for ensartethed */
+  width: 95%; /* Ensartet bredde for begge knapper */
 }
 
 .discard-button:hover {

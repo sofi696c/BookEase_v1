@@ -44,6 +44,7 @@ header {
   width: 100%; /* Fylder hele bredden af skærmen */
   background-color: #ccdabe; /* Baggrundsfarve */
   height: 100px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Tilføjer en skygge under headeren */
 }
 
 .logo {
@@ -66,19 +67,35 @@ nav a.router-link-exact-active:hover {
 
 nav a {
   display: inline-block;
-  padding: 0 1rem;
+  padding: 0.5rem 1rem; /* Juster padding for bedre knapstørrelse */
   border-left: 1px solid var(--color-border);
+  color: #a06666; /* Gør teksten hvid */
+  background-color: #ccdabe; /* Sætter baggrundsfarve til knapperne */
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
 }
 
 nav a:first-of-type {
   border: 0;
 }
 
+nav a:hover {
+  background-color: #a8b49c; /* Mørkere grå ved hover */
+  transform: scale(1.05); /* Lille zoom-effekt ved hover */
+}
+
 button {
   margin-left: 1rem; /* Giver lidt afstand til knappen */
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
+  background-color: #ccdabe; /* Rød baggrundsfarve for log out knap */
+  color: #a06666; /* Hvid tekst */
+  border: none; /* Ingen kant */
+  padding: 0.5rem 1rem; /* Juster padding */
+  cursor: pointer; /* Pointer cursor ved hover */
+  transition: background-color 0.3s, transform 0.3s; /* Smooth transition */
+}
+
+button:hover {
+  background-color: #a8b49c; /* Mørkere rød ved hover */
+  transform: scale(1.05); /* Lille zoom-effekt ved hover */
 }
 
 @media (min-width: 1024px) {
@@ -94,4 +111,5 @@ button {
     font-size: 1rem; /* Justerer navigationens tekststørrelse */
   }
 }
+
 </style>
