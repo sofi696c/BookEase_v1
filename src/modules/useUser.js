@@ -59,18 +59,17 @@ export function useUser() {
         }
     };
 
-    const addToReadBooks = async (bookId) => {
+    const addToReadBooks = async (book) => {
         if (user.value) {
             const readBooksCollectionRef = collection(db, 'users', user.value.uid, 'ReadBooks');
-            await addDoc(readBooksCollectionRef, bookId);
+            await addDoc(readBooksCollectionRef, book); // Ændret til at tilføje et objekt
         }
     };
 
     const removeFromReadBooks = async (bookId) => {
-        const user = auth.currentUser;
-        if (user) {
-            
-        const bookDocRef = doc(db, 'users', user.uid, 'read-books', bookId); // Opdater til read-books samlingen
+        const currentUser = auth.currentUser; // Ret til 'currentUser' for at undgå skygge for 'user'
+        if (currentUser) {
+            const bookDocRef = doc(db, 'users', currentUser.uid, 'ReadBooks', bookId); // Opdateret til 'ReadBooks' samlingen
             try {
                 await deleteDoc(bookDocRef);
                 console.log('Book removed from Read Books:', bookId);

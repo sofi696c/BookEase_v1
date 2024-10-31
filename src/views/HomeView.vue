@@ -111,8 +111,8 @@ const addBookToReadBooks = async (book) => {
 <template>
   <main>
     <div v-if="!user" class="login-section">
-      <input type="email" v-model="email" placeholder="Enter email" />
-      <input type="password" v-model="password" placeholder="Enter password" />
+      <input type="email" v-model="email" placeholder="Email" />
+      <input type="password" v-model="password" placeholder="Password" />
       <button @click="login(email, password)">Login</button>
       <p v-if="errorMessage">{{ errorMessage }}</p>
     </div>

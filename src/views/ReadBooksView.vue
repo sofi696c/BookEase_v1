@@ -3,15 +3,12 @@ import { ref, onMounted } from 'vue';
 import { db } from '../modules/firebase'; 
 import { getDocs, collection } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-
-import { doc, deleteDoc } from 'firebase/firestore';
-/* import useUser from '../modules/useUser'; */ 
+import { doc, deleteDoc } from 'firebase/firestore'; 
 
 const auth = getAuth();
 const readBooks = ref([]);
-/* const { removeFromReadBooks } = useUser();  */
-// const displayedBooks = ref([]); // Array til at holde styr på viste bøger
 
+// Fetch read books from Firestore
 const fetchReadBooks = async () => {
   const user = auth.currentUser;
   if (user) {
@@ -25,29 +22,27 @@ const fetchReadBooks = async () => {
     });
 
     readBooks.value = Array.from(uniqueBooks.values());
-    readBooks.value = [...readBooks.value]; // Initialiser med alle bøger
   }
 };
-// test fir non.imported function
 
+// Function to remove a book from Read Books list
 const removeFromReadBooks = async (bookId) => {
-        const user = auth.currentUser;
-        if (user) {
-            
-        const bookDocRef = doc(db, 'users', user.uid, 'read-books', bookId); // Opdater til read-books samlingen
-            try {
-                await deleteDoc(bookDocRef);
-                console.log('Book removed from Read Books:', bookId);
-            } catch (error) {
-                console.error("Error removing book from Read Books:", error);
-            }
+    const user = auth.currentUser;
+    if (user) {
+        const bookDocRef = doc(db, 'users', user.uid, 'ReadBooks', bookId); 
+        try {
+            await deleteDoc(bookDocRef);
+            console.log('Book removed from Read Books:', bookId);
+        } catch (error) {
+            console.error("Error removing book from Read Books:", error);
         }
-    };
+    }
+};
 
-// New function to handle book removal from Read Books list
+// Handle book removal
 const handleRemoveBook = async (bookId) => {
   try {
-    await removeFromReadBooks(bookId); // Calls the function from useUser.js
+    await removeFromReadBooks(bookId);
     readBooks.value = readBooks.value.filter(book => book.id !== bookId); // Remove book locally
   } catch (error) {
     console.error("Failed to remove book:", error);
@@ -79,25 +74,7 @@ onMounted(fetchReadBooks);
   </div>
 </template>
 
-<style>
-/* Styling til slet-knappen */
-.discard-button {
-  margin-top: 10px;
-  padding: 5px 10px;
-  color: white;
-  background-color: red;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.discard-button:hover {
-  background-color: #c61a07;
-}
-</style>
-
-
 <style scoped>
-/* Tilføj styling til slet-knappen her, hvis ønskes */
 .discard-button {
   margin-top: 10px;
   padding: 5px 10px;

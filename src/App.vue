@@ -33,7 +33,7 @@ const logout = async () => {
 
 </script>
 
-<style >
+<style>
 header {
   display: flex;
   flex-direction: column; /* Arrangerer indholdet vertikalt */
