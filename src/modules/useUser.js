@@ -9,6 +9,8 @@ export function useUser() {
     const user = ref(null);
     const role = ref(null);
     const error = ref(null);
+    const email = ref('');
+    const password = ref('');
 
     // Lyt til ændringer i autentificeringstilstand
     onAuthStateChanged(auth, (currentUser) => {
@@ -81,6 +83,8 @@ export function useUser() {
         login,
         logout,
         addToReadBooks,
-        removeFromReadBooks
+        removeFromReadBooks,
+        email,
+        password
     };
 }
