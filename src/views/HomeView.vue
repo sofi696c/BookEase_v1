@@ -185,7 +185,7 @@ main {
   justify-content: center;
   flex-direction: column;
   text-align: center;
-  margin-top: 10vh;
+  margin-top: 15vh;
 }
 
 .login-section {
